@@ -3,7 +3,7 @@ import torch.nn
 from encoder import Encoder
 from decoder import Decoder
 
-class Model(nn.Module):
+class Recognizer(nn.Module):
 
     def __init__(self, args):
         self.encoder = Encoder(args.input_frame ,args.input_dim, args.hidden_dim, args.num_input_layers)
