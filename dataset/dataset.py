@@ -18,4 +18,8 @@ class TuneDataset(Dataset):
         return self.data_size
 
     def __getitem(self, ix):
-        
+        feature = self.data[ix,0]
+        label = self.data[ix,1]
+        if self.transform:
+            feature = self.transform(feature)
+        return (feature, label)
