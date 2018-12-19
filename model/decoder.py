@@ -14,4 +14,5 @@ class decoder(nn.Module):
 
     def forward(self, inputs):
         outputs = self.rnn(inputs)
+        outputs = self.fc(outputs)
         return outputs

@@ -30,7 +30,7 @@ def get_argument():
     parser.add_argument("--encoder_hidden_dim", type=int, default=128, help="encoder hidden feature dimention")
     parser.add_argument("--num_decoder_layers", type=int, default=2, help="number of decoder layers")
     parser.add_argument("--decoder_hidden_dim", type=int, default=128, help="output feature dimention")
-    parser.add_argument("--output_dim", type=int, default=2, help="number of predicted label")
+    parser.add_argument("--output_dim", type=int, default=64, help="number of predicted label")
     args = parser.parse_args()
     return args
 
@@ -93,3 +93,6 @@ def train_recognizer(args):
     recognizer.load_state_dict(best_model_wts)
     return recognizer
 
+if __name__ == "__main__":
+    args = get_argument()
+    recognizer = train_recognizer(args)
