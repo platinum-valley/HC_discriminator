@@ -5,8 +5,8 @@ from torch.optim import lr_scheduler
 from torch.autograd import Variable
 from torchvision import transforms
 from torchvision import models, datasets
-from dataset import TuneDataset
-from model import Recognizer
+from .dataset.dataset import TuneDataset
+from .model.model import Recognizer
 
 import numpy as np
 import pickle
@@ -23,6 +23,14 @@ def get_argument():
     parser.add_argument("--gpu", action="store_true", help="flag of using gpu")
     parser.add_argument("--train_data", type=str, help="csv file discripted training dataset")
     parser.add_argument("--valid_data", type=str, help="csv file discripted validation dataset")
+
+    parser.add_argument("--input_frame", type=int, default=100,  help="input seaquence length")
+    parser.add_argument("--input_dim", type=int, default=13, help="input feature dimention")
+    parser.add_argument("--num_encoder_layers", type=int, default=2, help="number of encoder layers")
+    parser.add_argument("--encoder_hidden_dim", type=int, default=128, help="encoder hidden feature dimention")
+    parser.add_argument("--num_decoder_layers", type=int, default=2, help="number of decoder layers")
+    parser.add_argument("--decoder_hidden_dim", type=int, default=128, help="output feature dimention")
+    parser.add_argument("--output_dim", type=int, default=2, help="number of predicted label")
     args = parser.parse_args()
     return args
 
