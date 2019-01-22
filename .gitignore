@@ -1,2 +1,4 @@
 *.pyc
 dataset/librosa
+dataset/data
+dataset/*.csv

@@ -1,21 +1,21 @@
-
-train_csv=""
-valid_csv=""
+export CUDA_VISIBLE_DEVICES=0
+train_csv="dataset/dataset.csv"
+valid_csv="dataset/dataset_tmp.csv"
 
 epochs=100
 batch_size=64
 learning_rate=0.01
-weight_decay=0.0
-dropout_rate=0.1
+weight_decay=0.2
+dropout_rate=0.0
 
-input_frame=100
-input_dim=13
-num_encoder_layer=2
-encoder_hidden_dim=128
-num_decoder_layers=2
-decoder_hidden_dim=128
+input_frame=862
+input_dim=20
+num_encoder_layers=1
+encoder_hidden_dim=64
+num_decoder_layers=1
+decoder_hidden_dim=64
 output_dim=64
-
+label_dim=1
 
 
 python train.py\
@@ -33,5 +33,5 @@ python train.py\
     --encoder_hidden_dim ${encoder_hidden_dim}\
     --num_decoder_layers ${num_decoder_layers}\
     --decoder_hidden_dim ${decoder_hidden_dim}\
-    --output_dim ${output_dim}
-    --
+    --output_dim ${output_dim}\
+    --label_dim ${label_dim}
