@@ -21,7 +21,7 @@ class Recognizer(nn.Module):
         """
     def forward(self, inputs, init_encoder_state, sequence_length, device):
         encoder_outputs, encoder_state = self.encoder(inputs, init_encoder_state)
-        encoder_last_output = encoder_outputs[-1].detach()
+        encoder_last_output = encoder_outputs[-1]
         #print(encoder_last_output)
         #encoder_last_output = torch.unsqueeze(encoder_last_output, 1)
         #eye = torch.eye(sequence_length)
@@ -29,7 +29,7 @@ class Recognizer(nn.Module):
         #encoder_attn = torch.tensor([encoder_last_output.tolist() for i in range(sequence_length)]).type(torch.cuda.DoubleTensor).to(device)
         encoder_last_output = torch.unsqueeze(encoder_last_output, 2)
         #print(encoder_last_output)
-        mask = torch.ones((encoder_last_output.size()[0], 1, sequence_length)).type(torch.DoubleTensor).to(device)
+        mask = torch.ones((encoder_last_output.size()[0], 1, sequence_length)).to(device)
         #print(mask)
         encoder_attn = torch.bmm(encoder_last_output, mask)
         encoder_attn = torch.transpose(encoder_attn, 0, 1)

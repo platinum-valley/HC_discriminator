@@ -66,6 +66,7 @@ def train_recognizer(args):
         print("epoch {}".format(epoch+1))
 
         for phase in ["train", "valid"]:
+            acc = 0
             if phase == "train":
                 recognizer.train(True)
             else:
@@ -75,8 +76,8 @@ def train_recognizer(args):
             for i, data in enumerate(loaders[phase]):
                 inputs, label = data
                 inputs = torch.transpose(inputs, 0, 1)
-                inputs = inputs.to(device)
-                label = label.to(device)
+                inputs = inputs.type(torch.FloatTensor).to(device)
+                label = label.type(torch.FloatTensor).to(device)
                 if phase == "train":
                     torch.set_grad_enabled(True)
                 else:
@@ -86,9 +87,14 @@ def train_recognizer(args):
 
                 init_state = (torch.randn(args.num_encoder_layers, args.batch_size, args.encoder_hidden_dim).to(device), torch.randn(args.num_encoder_layers, args.batch_size, args.encoder_hidden_dim).to(device))
                 pred = recognizer(inputs, init_state, train_dataset.get_sequence_length(), device)
-                #print("pred: {}".format(pred))
-                #print("ref: {}".format(label))
+                if phase == "valid":
+                    print("pred: {}".format(pred))
+                    print("ref: {}".format(label))
                 loss = criterion(pred, label)
+                pred_label = pred.tolist()
+                pred_label = torch.tensor([1.0 if label > 0.5 else 0.0 for label in pred_label])
+                equal_label = torch.eq(pred_label.to(device), label)
+                acc += torch.sum(equal_label)
                 if phase == "train":
                     #print(loss)
                     loss.backward()
@@ -96,6 +102,7 @@ def train_recognizer(args):
                 running_loss += loss.item()
                 epoch_loss = running_loss / dataset_size[phase] * args.batch_size
             print("{} loss {:5f}".format(phase, epoch_loss))
+            print("{} acc {:5f}".format(phase, acc.item()/dataset_size[phase]))
             if phase == "valid" and epoch_loss < best_loss :
                 best_model_wts = recognizer.state_dict()
                 best_loss = epoch_loss

@@ -1,6 +1,6 @@
 export CUDA_VISIBLE_DEVICES=0
 train_csv="dataset/dataset.csv"
-valid_csv="dataset/dataset_tmp.csv"
+valid_csv="dataset/valid.csv"
 
 epochs=100
 batch_size=64
